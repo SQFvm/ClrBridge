@@ -5,6 +5,7 @@
 #include <sqfnamespace.h>
 #include <commandmap.h>
 #include <algorithm>
+#include <convert.h>
 
 int SqfVm::wrapper::active_counter = 0;
 SqfVm::wrapper::wrapper(Logger& logger)
@@ -105,4 +106,79 @@ void SqfVm::wrapper::remove_breakpoint(size_t line, std::string file)
 std::vector<::sqf::diagnostics::stackdump> SqfVm::wrapper::get_stackdump()
 {
 	return m_vm->active_vmstack()->dump_callstack_diff({});
+}
+
+::sqf::value SqfVm::wrapper::get_variable(std::string variable_name, std::string ns)
+{
+	if (ns.empty())
+	{
+		return m_vm->active_vmstack()->get_variable(variable_name);
+	}
+	else if (ns == "missionNamespace")
+	{
+		return m_vm->missionnamespace()->get_variable(variable_name);
+	}
+	else if (variable_name == "parsingNamespace")
+	{
+		return m_vm->parsingnamespace()->get_variable(variable_name);
+	}
+	else if (variable_name == "profileNamespace")
+	{
+		return m_vm->profilenamespace()->get_variable(variable_name);
+	}
+	else if (variable_name == "uiNamespace")
+	{
+		return m_vm->uinamespace()->get_variable(variable_name);
+	}
+	else
+	{
+		return {};
+	}
+}
+bool SqfVm::wrapper::set_variable(std::string variable_name, std::string data, std::string ns)
+{
+	bool success = false;
+	auto val = m_vm->evaluate_expression(data, success);
+	if (success)
+	{
+		if (ns.empty())
+		{
+			m_vm->active_vmstack()->stacks_top()->set_variable(variable_name, val);
+		}
+		else if (ns == "missionNamespace")
+		{
+			m_vm->missionnamespace()->set_variable(variable_name, val);
+		}
+		else if (variable_name == "parsingNamespace")
+		{
+			m_vm->parsingnamespace()->set_variable(variable_name, val);
+		}
+		else if (variable_name == "profileNamespace")
+		{
+			m_vm->profilenamespace()->set_variable(variable_name, val);
+		}
+		else if (variable_name == "uiNamespace")
+		{
+			m_vm->uinamespace()->set_variable(variable_name, val);
+		}
+		else
+		{
+			success = false;
+		}
+	}
+	return success;
+}
+std::vector<SqfVm::wrapper::variable_hit> SqfVm::wrapper::local_variables()
+{
+	std::vector<variable_hit> variables;
+	int i = 0;
+	for (auto callstack = m_vm->active_vmstack()->stacks_begin(); callstack != m_vm->active_vmstack()->stacks_end(); ++callstack)
+	{
+		for (auto& it : callstack->get()->get_variable_map())
+		{
+			variables.push_back({ i, it.first, it.second, callstack->get()->get_scopename(), ::sqf::type_str(it.second.dtype()) });
+		}
+		i--;
+	}
+	return variables;
 }

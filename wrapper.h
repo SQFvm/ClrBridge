@@ -3,6 +3,7 @@
 #include <vector>
 #include <parsing/astnode.h>
 #include <stackdump.h>
+#include <value.h>
 
 class Logger;
 namespace sqf
@@ -15,6 +16,19 @@ namespace SqfVm
 	class CallbackLogger;
 	class wrapper
 	{
+	public:
+		struct variable_hit
+		{
+			::sqf::value value;
+			::std::string variable;
+			::std::string scopename;
+			::std::string type;
+			int scope_index;
+
+			variable_hit(int scope_index, ::std::string variable, ::sqf::value::cref value, ::std::string scopename, ::std::string type) :
+				scope_index(scope_index), variable(variable), value(value), scopename(scopename), type(type) {}
+		};
+	private:
 		static int active_counter;
 		CallbackLogger* m_logger;
 		sqf::virtualmachine* m_vm;
@@ -38,5 +52,8 @@ namespace SqfVm
 		void set_breakpoint(size_t line, std::string file);
 		void remove_breakpoint(size_t line, std::string file);
 		std::vector<::sqf::diagnostics::stackdump> get_stackdump();
+		std::vector<SqfVm::wrapper::variable_hit> local_variables();
+		::sqf::value get_variable(std::string variable_name, std::string ns);
+		bool set_variable(std::string variable_name, std::string data, std::string ns);
 	};
 }
