@@ -96,9 +96,10 @@ void SqfVm::wrapper::set_breakpoint(size_t line, std::string file)
 
 void SqfVm::wrapper::remove_breakpoint(size_t line, std::string file)
 {
-	std::remove_if(m_vm->breakpoints_begin(), m_vm->breakpoints_end(), [line, file](sqf::diagnostics::breakpoint& breakpoint) -> bool {
+	auto res = std::remove_if(m_vm->breakpoints_begin(), m_vm->breakpoints_end(), [line, file](sqf::diagnostics::breakpoint& breakpoint) -> bool {
 		return breakpoint.line() == line && breakpoint.file() == file;
 		});
+	m_vm->breakpoints_erase(res, m_vm->breakpoints_end());
 }
 
 std::vector<::sqf::diagnostics::stackdump> SqfVm::wrapper::get_stackdump()
