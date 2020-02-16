@@ -23,6 +23,7 @@ namespace SqfVm
 		~wrapper();
 		std::string preprocess(std::string input, bool& errflag, std::string filename);
 		bool is_virtualmachine_running();
+		bool is_virtualmachine_done();
 
 		bool parse_sqf(std::string code, std::string path);
 		::sqf::parse::astnode parse_sqf_cst(std::string code, std::string path);
@@ -34,6 +35,8 @@ namespace SqfVm
 		bool abort();
 		bool assembly_step();
 		bool leave_scope();
+		void set_breakpoint(size_t line, std::string file);
+		void remove_breakpoint(size_t line, std::string file);
 		std::vector<::sqf::diagnostics::stackdump> get_stackdump();
 	};
 }
