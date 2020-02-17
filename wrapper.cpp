@@ -6,6 +6,7 @@
 #include <commandmap.h>
 #include <algorithm>
 #include <convert.h>
+#include <instruction.h>
 
 int SqfVm::wrapper::active_counter = 0;
 SqfVm::wrapper::wrapper(Logger& logger)
@@ -64,6 +65,15 @@ void SqfVm::wrapper::add_allowed_physical(std::string path)
 	m_vm->get_filesystem().add_allowed_physical(path);
 }
 
+std::vector<std::string> SqfVm::wrapper::get_allowed_physicals()
+{
+	return m_vm->get_filesystem().m_physicalboundaries;
+}
+std::vector<std::string> SqfVm::wrapper::get_virtual_paths()
+{
+	return m_vm->get_filesystem().m_virtualpaths;
+}
+
 bool SqfVm::wrapper::start()
 {
 	return m_vm->execute(sqf::virtualmachine::execaction::start) == sqf::virtualmachine::execresult::OK;
@@ -82,6 +92,10 @@ bool SqfVm::wrapper::abort()
 bool SqfVm::wrapper::assembly_step()
 {
 	return m_vm->execute(sqf::virtualmachine::execaction::assembly_step) == sqf::virtualmachine::execresult::OK;
+}
+bool SqfVm::wrapper::line_step()
+{
+	return m_vm->execute(sqf::virtualmachine::execaction::line_step) == sqf::virtualmachine::execresult::OK;
 }
 
 bool SqfVm::wrapper::leave_scope()
@@ -167,6 +181,19 @@ bool SqfVm::wrapper::set_variable(std::string variable_name, std::string data, s
 		}
 	}
 	return success;
+}
+::sqf::diagnostics::stackdump SqfVm::wrapper::get_current_instruction_infos()
+{
+	::sqf::diagnostics::stackdump dump;
+	auto current_instruction = m_vm->current_instruction();
+	if (current_instruction)
+	{
+		dump.column = current_instruction->col();
+		dump.line = current_instruction->line();
+		dump.file = current_instruction->file();
+		dump.dbginf = current_instruction->dbginf("DBG");
+	}
+	return dump;
 }
 std::vector<SqfVm::wrapper::variable_hit> SqfVm::wrapper::local_variables()
 {

@@ -43,11 +43,14 @@ namespace SqfVm
 		::sqf::parse::astnode parse_sqf_cst(std::string code, std::string path);
 		void add_mapping(std::string virtual_path, std::string physical_path);
 		void add_allowed_physical(std::string path);
+		std::vector<std::string> get_allowed_physicals();
+		std::vector<std::string> get_virtual_paths();
 
 		bool start();
 		bool stop();
 		bool abort();
 		bool assembly_step();
+		bool line_step();
 		bool leave_scope();
 		void set_breakpoint(size_t line, std::string file);
 		void remove_breakpoint(size_t line, std::string file);
@@ -55,5 +58,6 @@ namespace SqfVm
 		std::vector<SqfVm::wrapper::variable_hit> local_variables();
 		::sqf::value get_variable(std::string variable_name, std::string ns);
 		bool set_variable(std::string variable_name, std::string data, std::string ns);
+		::sqf::diagnostics::stackdump get_current_instruction_infos();
 	};
 }
