@@ -40,6 +40,7 @@ namespace SqfVm
 		bool is_virtualmachine_done();
 
 		bool parse_sqf(std::string code, std::string path);
+		bool parse_config(std::string code, std::string path);
 		::sqf::parse::astnode parse_sqf_cst(std::string code, std::string path);
 		void add_mapping(std::string virtual_path, std::string physical_path);
 		void add_allowed_physical(std::string path);
@@ -59,5 +60,6 @@ namespace SqfVm
 		::sqf::value get_variable(std::string variable_name, std::string ns);
 		bool set_variable(std::string variable_name, std::string data, std::string ns);
 		::sqf::diagnostics::stackdump get_current_instruction_infos();
+		std::pair<std::string, std::string> evaluate(std::string data);
 	};
 }

@@ -50,6 +50,11 @@ bool SqfVm::wrapper::parse_sqf(std::string code, std::string path)
 	return m_vm->parse_sqf(code, path);
 }
 
+bool SqfVm::wrapper::parse_config(std::string code, std::string path)
+{
+	return m_vm->parse_config(code, path);
+}
+
 ::sqf::parse::astnode SqfVm::wrapper::parse_sqf_cst(std::string code, std::string path)
 {
 	return m_vm->parse_sqf_cst(code, path);
@@ -148,6 +153,16 @@ std::vector<::sqf::diagnostics::stackdump> SqfVm::wrapper::get_stackdump()
 	{
 		return {};
 	}
+}
+std::pair<std::string, std::string> SqfVm::wrapper::evaluate(std::string data)
+{
+	bool success = false;
+	auto val = m_vm->evaluate_expression(data, success);
+	if (success)
+	{
+		return { val.tosqf(), sqf::type_str(val.dtype()) };
+	}
+	return { "", "" };
 }
 bool SqfVm::wrapper::set_variable(std::string variable_name, std::string data, std::string ns)
 {
