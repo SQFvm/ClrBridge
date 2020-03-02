@@ -8,7 +8,7 @@
 #include <convert.h>
 #include <instruction.h>
 
-int SqfVm::wrapper::active_counter = 0;
+std::atomic<int> SqfVm::wrapper::active_counter = 0;
 SqfVm::wrapper::wrapper(Logger& logger)
 {
 	m_vm = new sqf::virtualmachine(logger);
@@ -21,8 +21,7 @@ SqfVm::wrapper::wrapper(Logger& logger)
 SqfVm::wrapper::~wrapper()
 {
 	delete m_vm;
-	active_counter--;
-	if (active_counter == 0)
+	if ((--active_counter) == 0)
 	{
 		sqf::commandmap::get().uninit();
 	}

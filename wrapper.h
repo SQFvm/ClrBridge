@@ -4,6 +4,7 @@
 #include <parsing/astnode.h>
 #include <stackdump.h>
 #include <value.h>
+#include <atomic>
 
 class Logger;
 namespace sqf
@@ -29,7 +30,7 @@ namespace SqfVm
 				scope_index(scope_index), variable(variable), value(value), scopename(scopename), type(type) {}
 		};
 	private:
-		static int active_counter;
+		static std::atomic<int> active_counter;
 		CallbackLogger* m_logger;
 		sqf::virtualmachine* m_vm;
 	public:
