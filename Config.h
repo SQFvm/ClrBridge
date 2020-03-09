@@ -96,7 +96,7 @@ namespace SqfVm {
 				delete m_configdata;
 			}
 	public:
-
+		void MergeWith(Config^ otherconfig);
 			property System::String^ Name { System::String^ get(); }
 			property EConfigNodeType NodeType { EConfigNodeType get(); }
 			property System::Object^ Value { System::Object^ get(); }

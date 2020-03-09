@@ -96,6 +96,18 @@ System::Collections::Generic::IEnumerable<SqfVm::Config^>^ SqfVm::Config::Values
 	return list;
 }
 
+void SqfVm::Config::MergeWith(Config^ otherconfig)
+{
+	if (otherconfig)
+	{
+		(*otherconfig->m_configdata)->mergeinto(*m_configdata);
+	}
+	else
+	{
+		throw gcnew System::ArgumentNullException(gcnew String("otherconfig"));
+	}
+}
+
 bool SqfVm::Config::ContainsKey(System::String^ key)
 {
 	for (int i = 0; i < (int)(*m_configdata)->size(); i++)
