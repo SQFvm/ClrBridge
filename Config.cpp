@@ -6,6 +6,33 @@ int SqfVm::Config::Count::get()
 {
 	return (int)(*m_configdata)->size();
 }
+SqfVm::EConfigNodeType SqfVm::Config::NodeType::get()
+{
+	if ((*m_configdata)->is_null())
+	{
+		throw gcnew System::InvalidOperationException();
+	}
+	else if ((*m_configdata)->cfgvalue().dtype() == sqf::type::STRING)
+	{
+		return SqfVm::EConfigNodeType::String;
+	}
+	else if ((*m_configdata)->cfgvalue().dtype() == sqf::type::SCALAR)
+	{
+		return SqfVm::EConfigNodeType::Scalar;
+	}
+	else if ((*m_configdata)->cfgvalue().dtype() == sqf::type::NOTHING)
+	{
+		return SqfVm::EConfigNodeType::Config;
+	}
+	else if ((*m_configdata)->cfgvalue().dtype() == sqf::type::ARRAY)
+	{
+		return SqfVm::EConfigNodeType::Array;
+	}
+	else
+	{
+		throw gcnew System::InvalidOperationException();
+	}
+}
 System::Object^ SqfVm::Config::Value::get()
 {
 	auto res = (*m_configdata)->cfgvalue();

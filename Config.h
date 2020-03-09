@@ -7,6 +7,13 @@ namespace sqf
 	class configdata;
 }
 namespace SqfVm {
+	public enum class EConfigNodeType
+	{
+		Config,
+		Scalar,
+		String,
+		Array
+	};
 	public ref class Config : public IEnumerable<Config^>
 	{
 		private:
@@ -45,7 +52,7 @@ namespace SqfVm {
 					}
 				}
 			};
-		public:
+	internal:
 			Config(const std::shared_ptr<sqf::configdata>& configdata) :
 				m_configdata(new std::shared_ptr<sqf::configdata>(configdata))
 			{
@@ -54,7 +61,9 @@ namespace SqfVm {
 			{
 				delete m_configdata;
 			}
+	public:
 
+			property EConfigNodeType NodeType { EConfigNodeType get(); }
 			property System::Object^ Value { System::Object^ get(); }
 			property int Count { int get(); }
 			property Config^ default[int]{ Config^ get(int index); }
