@@ -46,6 +46,30 @@ System::Object^ SqfVm::Config::Value::get()
 	auto res = (*m_configdata)->cfgvalue();
 	return SqfVm::ClrVirtualmachine::FromValue(res);
 }
+SqfVm::Config^ SqfVm::Config::LogicalParent::get()
+{
+	auto res = (*m_configdata)->logical_parent();
+	if (res.dtype() == sqf::type::CONFIG)
+	{
+		return gcnew Config(res.data<sqf::configdata>());
+	}
+	else
+	{
+		return nullptr;
+	}
+}
+SqfVm::Config^ SqfVm::Config::InheritedParent::get()
+{
+	auto res = (*m_configdata)->inherited_parent();
+	if (res.dtype() == sqf::type::CONFIG)
+	{
+		return gcnew Config(res.data<sqf::configdata>());
+	}
+	else
+	{
+		return nullptr;
+	}
+}
 SqfVm::Config^ SqfVm::Config::default::get(int index)
 {
 	auto res = (*m_configdata)->at((size_t)index);

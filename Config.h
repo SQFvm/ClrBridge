@@ -105,6 +105,8 @@ namespace SqfVm {
 			property Config^ default[int]{ Config^ get(int index); }
 			virtual property Config^ default[System::String^]{ Config^ get(System::String^ index); }
 
+			virtual property Config^ LogicalParent { Config^ get(); }
+			virtual property Config^ InheritedParent { Config^ get(); }
 			// Inherited via IEnumerable
 			virtual System::Collections::IEnumerator^ EnumerableGetEnumerator() = System::Collections::IEnumerable::GetEnumerator
 			{
@@ -133,6 +135,10 @@ namespace SqfVm {
 
 			virtual bool TryGetValue(System::String^ key, SqfVm::Config^% value);
 
+			virtual System::String^ ToString() override
+			{
+				return System::String::Concat(gcnew System::String("Config (Name: "), Name, gcnew System::String(", NodeType: "), NodeType, gcnew System::String(")"));
+			}
 
 };
 }
