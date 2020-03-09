@@ -63,6 +63,7 @@ namespace SqfVm {
 			}
 	public:
 
+			property System::String^ Name { System::String^ get(); }
 			property EConfigNodeType NodeType { EConfigNodeType get(); }
 			property System::Object^ Value { System::Object^ get(); }
 			property int Count { int get(); }

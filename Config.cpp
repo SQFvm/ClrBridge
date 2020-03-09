@@ -6,6 +6,10 @@ int SqfVm::Config::Count::get()
 {
 	return (int)(*m_configdata)->size();
 }
+System::String^ SqfVm::Config::Name::get()
+{
+	return gcnew System::String((*m_configdata)->name().c_str());
+}
 SqfVm::EConfigNodeType SqfVm::Config::NodeType::get()
 {
 	if ((*m_configdata)->is_null())
