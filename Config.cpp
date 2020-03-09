@@ -67,3 +67,59 @@ SqfVm::Config^ SqfVm::Config::default::get(System::String^ index)
 		return nullptr;
 	}
 }
+
+System::Collections::Generic::IEnumerable<System::String^>^ SqfVm::Config::Keys::get()
+{
+	auto list = gcnew System::Collections::Generic::List<System::String^>((*m_configdata)->size());
+	for (int i = 0; i < (int)(*m_configdata)->size(); i++)
+	{
+		auto val = (*m_configdata)->at(i);
+		if (val.dtype() == sqf::type::CONFIG)
+		{
+			list->Add(gcnew System::String(val.data<sqf::configdata>()->name().c_str()));
+		}
+		else
+		{
+			// Unknown Cause.
+			throw gcnew System::Exception();
+		}
+	}
+	return list;
+}
+System::Collections::Generic::IEnumerable<SqfVm::Config^>^ SqfVm::Config::Values::get()
+{
+	auto list = gcnew System::Collections::Generic::List<SqfVm::Config^>((*m_configdata)->size());
+	for (int i = 0; i < (int)(*m_configdata)->size(); i++)
+	{
+		list->Add(this[i]);
+	}
+	return list;
+}
+
+bool SqfVm::Config::ContainsKey(System::String^ key)
+{
+	for (int i = 0; i < (int)(*m_configdata)->size(); i++)
+	{
+		auto val = (*m_configdata)->at(i);
+		if (val.dtype() == sqf::type::CONFIG)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+bool SqfVm::Config::TryGetValue(System::String^ key, SqfVm::Config^% value)
+{
+	for (int i = 0; i < (int)(*m_configdata)->size(); i++)
+	{
+		auto val = (*m_configdata)->at(i);
+		if (val.dtype() == sqf::type::CONFIG)
+		{
+			value = gcnew SqfVm::Config(val.data<sqf::configdata>());
+			return true;
+		}
+	}
+	value = nullptr;
+	return false;
+}
