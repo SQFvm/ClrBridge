@@ -8,7 +8,7 @@ namespace sqf
 }
 namespace SqfVm {
 
-	public enum class SqfNodeType
+	public enum class SqfAstnodeType
 	{
 		NA = 0,
 		SQF,
@@ -39,10 +39,10 @@ namespace SqfVm {
 		CODE,
 		ARRAY
 	};
-	public ref class SqfNode
+	public ref class Astnode
 	{
 	private:
-		System::Collections::Generic::List<SqfNode^>^ m_children;
+		System::Collections::Generic::List<Astnode^>^ m_children;
 		size_t m_offset;
 		size_t m_length;
 		size_t m_line;
@@ -50,13 +50,13 @@ namespace SqfVm {
 		short m_kind;
 		System::String^ m_file;
 	public:
-		SqfNode(::sqf::parse::astnode& base);
-		System::Collections::Generic::List<SqfNode^>^ GetChildren() { return m_children; }
+		Astnode(::sqf::parse::astnode& base);
+		System::Collections::Generic::List<Astnode^>^ GetChildren() { return m_children; }
 		size_t GetOffset() { return m_offset; }
 		size_t GetLength() { return m_length; }
 		size_t GetLine() { return m_line; }
 		size_t GetColumn() { return m_col; }
-		SqfNodeType GetNodeType() { return static_cast<SqfNodeType>(m_kind); }
+		SqfAstnodeType GetSqfNodeType() { return static_cast<SqfAstnodeType>(m_kind); }
 		System::String^ GetFile() { return m_file; }
 
 	};
