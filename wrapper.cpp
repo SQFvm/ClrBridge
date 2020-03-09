@@ -69,7 +69,7 @@ std::shared_ptr<sqf::configdata> SqfVm::wrapper::parse_into_config(std::string c
 	}
 	else
 	{
-		return {};
+		throw std::runtime_error("Parse Failed.");
 	}
 }
 
