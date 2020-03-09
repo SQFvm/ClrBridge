@@ -49,7 +49,7 @@ System::Object^ SqfVm::Config::Value::get()
 SqfVm::Config^ SqfVm::Config::LogicalParent::get()
 {
 	auto res = (*m_configdata)->logical_parent();
-	if (res.dtype() == sqf::type::CONFIG)
+	if (res.dtype() == sqf::type::CONFIG && !res.data<sqf::configdata>()->is_null())
 	{
 		return gcnew Config(res.data<sqf::configdata>());
 	}
@@ -61,7 +61,7 @@ SqfVm::Config^ SqfVm::Config::LogicalParent::get()
 SqfVm::Config^ SqfVm::Config::InheritedParent::get()
 {
 	auto res = (*m_configdata)->inherited_parent();
-	if (res.dtype() == sqf::type::CONFIG)
+	if (res.dtype() == sqf::type::CONFIG && !res.data<sqf::configdata>()->is_null())
 	{
 		return gcnew Config(res.data<sqf::configdata>());
 	}
