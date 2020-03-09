@@ -3,7 +3,7 @@ namespace sqf
 {
 	namespace parse
 	{
-		class astnode;
+		struct astnode;
 	}
 }
 namespace SqfVm {

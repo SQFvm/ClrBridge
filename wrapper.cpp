@@ -73,10 +73,6 @@ std::shared_ptr<sqf::configdata> SqfVm::wrapper::parse_into_config(std::string c
 	}
 }
 
-::sqf::parse::astnode SqfVm::wrapper::parse_sqf_cst(std::string code, std::string path)
-{
-	return m_vm->parse_sqf_cst(code, path);
-}
 ::sqf::parse::astnode SqfVm::wrapper::parse_config_cst(std::string code, std::string path)
 {
 	return m_vm->parse_config_cst(code, path);

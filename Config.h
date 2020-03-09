@@ -40,7 +40,7 @@ namespace SqfVm {
 						}
 						else
 						{
-							gcnew System::InvalidOperationException();
+							throw gcnew System::InvalidOperationException();
 						}
 					}
 				}
