@@ -58,7 +58,7 @@ SqfVm::Config^ SqfVm::Config::default::get(System::String^ index)
 {
 	auto key = msclr::interop::marshal_as<std::string>(index);
 	auto res = (*m_configdata)->navigate(key);
-	if (res.dtype() == sqf::type::CONFIG)
+	if (res.dtype() == sqf::type::CONFIG && !res.data<sqf::configdata>()->is_null())
 	{
 		return gcnew SqfVm::Config(res.data<sqf::configdata>());
 	}
