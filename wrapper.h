@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <memory>
 #include <parsing/astnode.h>
 #include <stackdump.h>
 #include <value.h>
@@ -9,6 +10,7 @@ class Logger;
 namespace sqf
 {
 	class virtualmachine;
+	class configdata;
 }
 
 namespace SqfVm
@@ -41,6 +43,7 @@ namespace SqfVm
 
 		bool parse_sqf(std::string code, std::string path);
 		bool parse_config(std::string code, std::string path);
+		std::shared_ptr<sqf::configdata> parse_into_config(std::string code, std::string path);
 		::sqf::parse::astnode parse_sqf_cst(std::string code, std::string path);
 		void add_mapping(std::string virtual_path, std::string physical_path);
 		void add_allowed_physical(std::string path);
