@@ -101,6 +101,7 @@ namespace SqfVm {
 			property EConfigNodeType NodeType { EConfigNodeType get(); }
 			property System::Object^ Value { System::Object^ get(); }
 			virtual property int Count { int get(); }
+			virtual property System::String^ ParentName { System::String^ get(); }
 			property Config^ default[int]{ Config^ get(int index); }
 			virtual property Config^ default[System::String^]{ Config^ get(System::String^ index); }
 

@@ -10,6 +10,10 @@ System::String^ SqfVm::Config::Name::get()
 {
 	return gcnew System::String((*m_configdata)->name().c_str());
 }
+System::String^ SqfVm::Config::ParentName::get()
+{
+	return gcnew System::String((*m_configdata)->inherited_parent_name().c_str());
+}
 SqfVm::EConfigNodeType SqfVm::Config::NodeType::get()
 {
 	if ((*m_configdata)->is_null())
