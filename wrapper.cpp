@@ -5,6 +5,7 @@
 #include <sqfnamespace.h>
 #include <commandmap.h>
 #include <algorithm>
+#include <configdata.h>
 #include <convert.h>
 #include <instruction.h>
 
@@ -59,6 +60,23 @@ bool SqfVm::wrapper::parse_config(std::string code, std::string path)
 	return m_vm->parse_config(code, path);
 }
 
+std::shared_ptr<sqf::configdata> SqfVm::wrapper::parse_into_config(std::string code, std::string path)
+{
+	auto config = std::make_shared<sqf::configdata>();
+	if (m_vm->parse_config(code, path, config))
+	{
+		return config;
+	}
+	else
+	{
+		return {};
+	}
+}
+
+::sqf::parse::astnode SqfVm::wrapper::parse_sqf_cst(std::string code, std::string path)
+{
+	return m_vm->parse_sqf_cst(code, path);
+}
 ::sqf::parse::astnode SqfVm::wrapper::parse_config_cst(std::string code, std::string path)
 {
 	return m_vm->parse_config_cst(code, path);
